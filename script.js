@@ -1,13 +1,3 @@
-/*import { db } from './firebase-config.js';
-import { ref, set, push } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js';
-
-// Test connection outside DOMContentLoaded
-const testRef = ref(db, 'connection-test');
-set(testRef, {
-    lastAccess: new Date().toISOString(),
-    status: 'connected'
-});
-*/
 document.addEventListener('DOMContentLoaded', () => {
     // DOM Elements
     const magnifier = document.querySelector('.magnifying-glass');
@@ -22,7 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const overlay = document.getElementById('overlay');
     const closeButtons = document.querySelectorAll('.close-btn');
     const tooltipText = document.querySelector('.tooltip-text');
-    const bioBtn = document.getElementById('bioBtn');
     const artistName = document.querySelector('.semibold');
 
     function updateZoom(e) {
@@ -117,12 +106,30 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay.style.display = 'block';
         questionPopup.style.display = 'block';
     });
-artistName.addEventListener('click', () => {
+
+    artistName.addEventListener('click', () => {
     overlay.style.display = 'block';
     bioPopup.style.display = 'block';
 });
-// Keep only this single close functionality
-closeButtons.forEach(button => {
+    // Close functionality
+    closeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const popup = button.closest('.popup');
+            if (popup.classList.contains('transport-popup')) {
+                popup.classList.remove('show');
+                setTimeout(() => {
+                    popup.style.display = 'none';
+                    overlay.style.display = 'none';
+                }, 500);
+            } else {
+                overlay.style.display = 'none';
+                popup.style.display = 'none';
+            }
+        });
+    });
+
+    // Close on overlay click
+ closeButtons.forEach(button => {
     button.addEventListener('click', () => {
         const popup = button.closest('.popup');
         if (popup.classList.contains('transport-popup')) {
